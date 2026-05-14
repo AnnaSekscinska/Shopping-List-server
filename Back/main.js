@@ -1,15 +1,41 @@
-const  http = require('http');
+const express = require("express");
+let mysql = require('mysql2');
+const cors = require("cors");
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-
-    res.end('Hello World!\n');
+let con = mysql.createConnection({
+    host: "127.0.0.1",
+    user: "root",
+    password: "ania",
+    port: 3306,
 });
 
-const PORT = 8000;
+con.connect(function(err) {
+    if(err) throw err;
+    console.log("Connected!");
+})
 
-server.listen(PORT, 'localhost', () =>{
-    console.log(`Server running at http://localhost:${PORT}/`);
-});
+
+
+const app = express();
+app.use(cors());
+app.use(express.json());
+
+let zakupy =[];
+app.get("/api/products", async (req, res) =>{
+
+    res.json(zakupy);
+})
+
+app.put("/api/products", (req, res) => {
+    console.log(req.body);
+    zakupy.push(req.body);
+    res.json(zakupy);
+})
+
+app.listen(6767, () => {
+    console.log("67676767")
+})
+
+
 
 
